@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    username: postgres
+    password: root
+    url: jdbc:postgresql://localhost:5432/tg_bot
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: false
+server:
+  port: 9000
+
+app:
+  jjwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
+    access_expiration: 86400
+    refresh_expiration: 2592000
+    tokenType: Bearer
+
+storage:
+  upload_dir: uploads
