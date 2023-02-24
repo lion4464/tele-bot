@@ -44,7 +44,7 @@ public class FileEntity{
     private String type;
 
     @CreatedBy
-    @Column(name = "created_by", updatable = false)
+    @Column(name = "created_by")
     private UUID createdBy;
 
     @CreatedDate
@@ -56,7 +56,7 @@ public class FileEntity{
     private Long modifiedDate;
 
     @LastModifiedBy
-    @Column(name = "modified_by",nullable = false)
+    @Column(name = "modified_by")
     private UUID modifiedBy;
 
 

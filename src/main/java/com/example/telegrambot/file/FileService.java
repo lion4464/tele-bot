@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public interface FileService {
-    FileEntity create(MultipartFile file) throws IOException;
+    FileEntity create(MultipartFile file) throws IOException, DataNotFoundException;
     Resource loadFileAsResource(String fileName) throws DataNotFoundException;
     ResponseEntity<Resource> download(String fileName, HttpServletRequest request) throws DataNotFoundException;
     ResponseEntity<Resource> preview(String fileName, HttpServletRequest request) throws DataNotFoundException;
@@ -20,5 +20,5 @@ public interface FileService {
     FileEntity createFromUrl(String url, String extension, String fileName, String contentType) throws IOException;
     FileEntity createFromBase64(String fileBase64, String extension, String fileName, String contentType) throws IOException;
 
-    FileEntity findById(UUID id) throws FileNotFoundException;
+    FileEntity findById(UUID id) throws DataNotFoundException;
 }

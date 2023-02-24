@@ -1,6 +1,7 @@
 package com.example.telegrambot.file;
 
 import com.example.telegrambot.exceptions.DataNotFoundException;
+import com.example.telegrambot.intergation.RestService;
 import net.bytebuddy.utility.RandomString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Base64;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,10 +39,12 @@ public class FileServiceImpl implements FileService {
     private final Path fileStorageLocation;
 
     private static final Logger logger = LogManager.getLogger();
+    private final RestService restService;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileRepository) {
+    public FileServiceImpl(FileRepository fileRepository, RestService restService) {
         this.fileRepository = fileRepository;
+        this.restService = restService;
         this.fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -52,9 +54,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public FileEntity create(MultipartFile file) throws IOException {
+    public FileEntity create( MultipartFile file) throws IOException, DataNotFoundException {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        return createFile(file.getInputStream(),extension,file.getOriginalFilename(),file.getSize(),file.getContentType());
+        FileEntity result = createFile(file.getInputStream(),extension,file.getOriginalFilename(),file.getSize(),file.getContentType());
+        loadFileAsResource(result.getGuid());
+        restService.sendFileWithCaptionToGroup()
     }
 
     @Override
@@ -110,10 +114,10 @@ public class FileServiceImpl implements FileService {
         fileRepository.delete(model);
     }
 
-    public FileEntity findById(UUID id) throws FileNotFoundException {
+    public FileEntity findById(UUID id) throws DataNotFoundException {
         Optional<FileEntity> optional =  fileRepository.findById(id);
-        if (Objects.isNull(optional))
-            throw new FileNotFoundException("file not found");
+        if (optional.isEmpty())
+            throw new DataNotFoundException("file not found");
         return optional.get();
     }
 

@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserEntity getUser(String username) {
+    public UserEntity getUser(String username) throws DataNotFoundException {
         logger.info(" user found at {}", username);
         if (userRepository.findByUsername(username).isEmpty())
             throw new DataNotFoundException("User is not in our db");
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserEntity findById(UUID userId) {
+    public UserEntity findById(UUID userId) throws DataNotFoundException {
         UserEntity user = userRepository.findById(userId).get();
         if (!user.getStatus().equals(DataStatusEnum.ACTIVE))
             throw new DataNotFoundException("User not found in our Db");
