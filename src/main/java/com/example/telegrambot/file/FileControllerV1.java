@@ -29,7 +29,7 @@ public class FileControllerV1 {
     }
 
     @PostMapping
-        public ResponseEntity<FileDto> create(@RequestParam MultipartFile uploadedFile) throws IOException {
+        public ResponseEntity<FileDto> create(@RequestParam MultipartFile uploadedFile) throws IOException, DataNotFoundException {
         return ResponseEntity.ok(fileConverter.convertFromEntity(fileService.create(uploadedFile)));
     }
 

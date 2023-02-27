@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @PreAuthorize("hasAnyRole('ADMIN')")
-@RequestMapping("/api/file")
+@RequestMapping("/api/common_file")
 public class FileControllerCpV1 {
     private final FileService fileService;
     private final FileConverter fileConverter;
@@ -29,7 +29,7 @@ public class FileControllerCpV1 {
     }
 
     @PostMapping
-        public ResponseEntity<FileDto> create(@RequestParam("file") MultipartFile uploadedFile) throws IOException {
+        public ResponseEntity<FileDto> create(@RequestParam("file") MultipartFile uploadedFile) throws IOException, DataNotFoundException {
         return ResponseEntity.ok(fileConverter.convertFromEntity(fileService.create(uploadedFile)));
     }
 

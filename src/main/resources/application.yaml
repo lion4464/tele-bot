@@ -16,6 +16,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: false
+  main:
+    allow-bean-definition-overriding: true
 server:
   port: 9000
 
@@ -28,3 +30,8 @@ app:
 
 storage:
   upload_dir: uploads
+senderbot:
+  base_url: https://api.telegram.org/
+  token: ${SENDER_TOKEN:6231264144:AAFVhLGO6Z8_L2AJfttxyIoMDaJlVoh0d0I}
+  support: ${SENDER_SUPPORT_CHAT_ID:-821597353}
+

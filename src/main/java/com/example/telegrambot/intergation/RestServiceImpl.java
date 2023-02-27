@@ -4,13 +4,14 @@ package com.example.telegrambot.intergation;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class RestServiceImpl implements RestService {
@@ -20,9 +21,9 @@ public class RestServiceImpl implements RestService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "*/*");
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
-        map.add("chat_id", chatId);
-        map.add("text", text);
+        Map<String, String> map= new HashMap<>();
+        map.put("chat_id", chatId);
+        map.put("text", text);
         HttpEntity<?> request = new HttpEntity<>(map, headers);
         RestTemplate rest = new RestTemplate();
         return new RequestTemplateMultiValue(rest,request);
@@ -41,6 +42,30 @@ public class RestServiceImpl implements RestService {
         RestTemplate rest = new RestTemplate();
         return new RequestTemplateMultiValue(rest,request);
 
+    }
+
+    @Override
+    public RequestTemplateMultiValue sendErorrMessageToGroup(String erorr, String text, String chatId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Accept", "*/*");
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        map.add("chat_id", chatId);
+        map.add("text", text);
+        HttpEntity<?> request = new HttpEntity<>(map, headers);
+        RestTemplate rest = new RestTemplate();
+        return new RequestTemplateMultiValue(rest,request);
+    }
+
+    @Override
+    public RequestTemplateMultiValue getUpdate() {
+        RestTemplate rest = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Accept", "*/*");
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+        HttpEntity<?> request = new HttpEntity<>(map, headers);
+        return new RequestTemplateMultiValue(rest,request);
     }
 
 

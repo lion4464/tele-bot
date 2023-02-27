@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Base64;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,8 +58,15 @@ public class FileServiceImpl implements FileService {
     public FileEntity create( MultipartFile file) throws IOException, DataNotFoundException {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         FileEntity result = createFile(file.getInputStream(),extension,file.getOriginalFilename(),file.getSize(),file.getContentType());
-        loadFileAsResource(result.getGuid());
-        restService.sendFileWithCaptionToGroup()
+        Resource resource = loadFileAsResource(result.getGuid());
+        SendCaptionDto captions = new SendCaptionDto();
+        captions.setCaption(Map.of(
+                "@rustam4464: ","#test",
+                "merchant","test_merchant"
+
+        ));
+//        restService.sendFileWithCaptionToGroup(captions.toString(),resource.getFile(),)
+    return null;
     }
 
     @Override
